@@ -411,14 +411,14 @@
             border-left: 4px solid #5f6368;
             cursor: pointer;
             transition: all 0.3s ease;
-            opacity: 0.6;
-            transform: scale(0.95);
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
         }
         
-        .maneuver-card-compact:hover {
-            opacity: 0.85;
-            transform: scale(0.98);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .maneuver-card-compact:hover:not(.active) {
+            opacity: 0;
+            transform: scale(0.9);
         }
         
         .maneuver-card-compact.active {
@@ -429,6 +429,7 @@
             border-color: #1f73e6;
             border-left-color: #1f73e6;
             box-shadow: 0 4px 16px rgba(31, 115, 230, 0.3);
+            pointer-events: auto;
         }
         
         .maneuver-card-compact.tweaked {
