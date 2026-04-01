@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VORTEX HeatCast - Lennix Smith</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #ffffff;
+            padding: 0;
+            color: #202124;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #dadce0;
+            padding: 32px 40px;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 32px;
+        }
+        
+        .header-left {
+            flex: 1;
+        }
+        
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .tagline {
+            font-size: 0.95rem;
+            color: #5f6368;
+            font-weight: 400;
+            margin-bottom: 12px;
+        }
+        
+        .vortex-badge {
+            display: inline-block;
+            background: #f8f9fa;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #5f6368;
+            border: 1px solid #dadce0;
+        }
+        
+        /* Event Info Section */
+        .event-info {
+            background: #f8f9fa;
+            padding: 32px 40px;
+            border-bottom: 1px solid #dadce0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .surfer-details {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .jersey-indicator {
+            width: 56px;
+            height: 56px;
+            background: #dc3545;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .surfer-info h2 {
+            font-size: 1.35rem;
+            color: #202124;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        
+        .event-name {
+            font-size: 0.9rem;
+            color: #5f6368;
+        }
+        
+        /* System Notes */
+        .system-alert {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 16px 24px;
+            margin: 24px 40px;
+            border-radius: 0;
+            font-size: 0.95rem;
+            color: #856404;
+        }
+        
+        /* Stats Section */
+        .wave-stats {
+            background: #ffffff;
+            padding: 32px 40px;
+            border-top: 1px solid #dadce0;
+            border-bottom: 1px solid #dadce0;
+        }
+        
+        .wave-stats h3 {
+            margin-bottom: 24px;
+            font-size: 1.25rem;
+            color: #202124;
+            font-weight: 500;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+        
+        .stat-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid #dadce0;
+        }
+        
+        .stat-box h4 {
+            font-size: 0.9rem;
+            color: #5f6368;
+            margin-bottom: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .stat-box .value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #202124;
+        }
+        
+        /* Timeline Section */
+        .timeline-section {
+            padding: 40px;
+        }
+        
+        .timeline-section h2 {
+            font-size: 1.5rem;
+            color: #202124;
+            margin-bottom: 32px;
+            font-weight: 500;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #dadce0;
+        }
+        
+        .maneuver-card {
+            position: relative;
+            margin-bottom: 40px;
+            padding: 24px;
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            border-left: 4px solid #5f6368;
+        }
+        
+        .maneuver-card::before {
+            content: '';
+            position: absolute;
+            left: -19px;
+            top: 28px;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border: 2px solid #dadce0;
+            border-radius: 50%;
+        }
+        
+        .maneuver-card.tweaked {
+            border-left-color: #1f73e6;
+        }
+        
+        .maneuver-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .timestamp {
+            font-size: 0.9rem;
+            color: #5f6368;
+            font-weight: 500;
+            background: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            border: 1px solid #dadce0;
+        }
+        
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        
+        .difficulty-badge {
+            background: white;
+            border: 1px solid #dadce0;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            color: #5f6368;
+        }
+        
+        .execution-badge {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            color: #1565c0;
+            font-weight: 500;
+        }
+        
+        .cardplay-badge {
+            background: white;
+            border: 1px solid #dadce0;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            color: #5f6368;
+        }
+        
+        .maneuver-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 16px;
+        }
+        
+        .analysis {
+            background: white;
+            padding: 16px;
+            border-radius: 4px;
+            border-left: 3px solid #1f73e6;
+            line-height: 1.7;
+            color: #3c4043;
+            font-size: 0.95rem;
+        }
+        
+        .analysis strong {
+            color: #202124;
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .event-info {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header-content {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline {
+                padding-left: 20px;
+            }
+            
+            .maneuver-card::before {
+                left: -15px;
+                top: 24px;
+                width: 12px;
+                height: 12px;
+            }
+            
+            .header, .event-info, .wave-stats, .timeline-section {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Video Section */
+        .video-section {
+            padding: 40px;
+            background: #ffffff;
+            border-top: 1px solid #dadce0;
+            border-bottom: 1px solid #dadce0;
+        }
+        
+        .video-timeline-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+        }
+        
+        .video-wrapper {
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .video-container {
+            width: 100%;
+            height: 337px;
+            background: #000000;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        .maneuvers-column {
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .maneuvers-column h3 {
+            font-size: 1.25rem;
+            color: #202124;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+        
+        .maneuvers-list {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 8px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #dadce0 #f8f9fa;
+        }
+        
+        .maneuvers-list::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .maneuvers-list::-webkit-scrollbar-track {
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .maneuvers-list::-webkit-scrollbar-thumb {
+            background: #dadce0;
+            border-radius: 10px;
+        }
+        
+        .maneuvers-list::-webkit-scrollbar-thumb:hover {
+            background: #5f6368;
+        }
+        
+        .maneuver-card-compact {
+            flex: 0 0 280px;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 2px solid #dadce0;
+            border-radius: 4px;
+            border-left: 4px solid #5f6368;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.6;
+            transform: scale(0.95);
+        }
+        
+        .maneuver-card-compact:hover {
+            opacity: 0.85;
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .maneuver-card-compact.active {
+            flex: 0 0 280px;
+            opacity: 1;
+            transform: scale(1);
+            background: #e3f2fd;
+            border-color: #1f73e6;
+            border-left-color: #1f73e6;
+            box-shadow: 0 4px 16px rgba(31, 115, 230, 0.3);
+        }
+        
+        .maneuver-card-compact.tweaked {
+            border-left-color: #1f73e6;
+        }
+        
+        .maneuver-time {
+            font-size: 0.85rem;
+            color: #5f6368;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .maneuver-title-compact {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 12px;
+        }
+        
+        .maneuver-analysis-compact {
+            font-size: 0.9rem;
+            color: #3c4043;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .maneuver-analysis-compact strong {
+            color: #202124;
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .video-timeline-container {
+                flex-direction: column;
+            }
+            
+            .video-container {
+                position: static;
+                width: 100%;
+            }
+        }
+        
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            border-top: 1px solid #dadce0;
+            padding: 24px 40px;
+            margin-top: 40px;
+        }
+        
+        .footer-note {
+            font-size: 0.9rem;
+            color: #5f6368;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>HeatCast</h1>
+                    <div class="tagline">Maneuver observation and analysis</div>
+                    <div class="vortex-badge">VORTEX v1.0</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Event Info -->
+        <div class="event-info">
+            <div class="surfer-details">
+                <div class="jersey-indicator">RED</div>
+                <div class="surfer-info">
+                    <h2>Lennix Smith</h2>
+                    <div class="event-name">World Junior Championships • Quarterfinals</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Video and Maneuvers Section -->
+        <div class="video-section">
+            <div class="video-timeline-container">
+                <!-- Video Column -->
+                <div class="video-wrapper">
+                    <div class="video-container">
+                        <video id="surfVideo" controls>
+                            <source src="Lennix_Smith_WSL_World_Junior.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+                
+                <!-- Maneuvers Column -->
+                <div class="maneuvers-column">
+                    <h3>Maneuver Breakdown</h3>
+                    <div class="maneuvers-list">
+                        
+                        <!-- M1: Lip-Line Floater -->
+                        <div class="maneuver-card-compact" data-start="3.5" data-end="6">
+                            <div class="maneuver-time">3.5s</div>
+                            <div class="maneuver-title-compact">M1: Lip-Line Floater</div>
+                            <div class="maneuver-analysis-compact">
+                                <strong>Zone:</strong> Lip / Pocket<br>
+                                <strong>Attack Angle:</strong> Diagonal<br><br>
+                                Speed generation + projection. Clean execution sets up down-the-line flow.
+                            </div>
+                        </div>
+                        
+                        <!-- M2: Vertical Snap -->
+                        <div class="maneuver-card-compact tweaked" data-start="6" data-end="9">
+                            <div class="maneuver-time">6s</div>
+                            <div class="maneuver-title-compact">M2: Vertical Snap</div>
+                            <div class="maneuver-analysis-compact">
+                                <strong>Zone:</strong> High / Pocket<br>
+                                <strong>Attack Angle:</strong> Vertical<br>
+                                <strong>Execution Quality:</strong> Above-Textbook<br><br>
+                                Pure vertical attack with exceptional execution.
+                            </div>
+                        </div>
+                        
+                        <!-- M3: Pocket Wrap -->
+                        <div class="maneuver-card-compact" data-start="9" data-end="11.5">
+                            <div class="maneuver-time">9s</div>
+                            <div class="maneuver-title-compact">M3: Pocket Wrap</div>
+                            <div class="maneuver-analysis-compact">
+                                <strong>Zone:</strong> Mid / Deep Pocket<br>
+                                <strong>Attack Angle:</strong> Vertical<br><br>
+                                Critical section commitment through the deep pocket.
+                            </div>
+                        </div>
+                        
+                        <!-- M4: Snap with Fin Drift -->
+                        <div class="maneuver-card-compact tweaked" data-start="11.5" data-end="15">
+                            <div class="maneuver-time">11.5s</div>
+                            <div class="maneuver-title-compact">M4: Snap with Fin Drift</div>
+                            <div class="maneuver-analysis-compact">
+                                <strong>Zone:</strong> High / Pocket<br>
+                                <strong>Attack Angle:</strong> Vertical<br>
+                                <strong>Execution Quality:</strong> Above-Textbook<br><br>
+                                Highest difficulty maneuver on the wave.
+                            </div>
+                        </div>
+                        
+                        <!-- M5: Finishing Bash -->
+                        <div class="maneuver-card-compact" data-start="15" data-end="16">
+                            <div class="maneuver-time">15s</div>
+                            <div class="maneuver-title-compact">M5: Finishing Bash</div>
+                            <div class="maneuver-analysis-compact">
+                                <strong>Zone:</strong> High / Pocket (Collapsing)<br>
+                                <strong>Attack Angle:</strong> Vertical<br>
+                                <strong>CardPlay:</strong> Opportunity-Capped<br><br>
+                                Strong finish with full commitment maintained.
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-note">
+                <strong>HeatCast v1.0:</strong> Live maneuver observation and analysis powered by VORTEX infrastructure.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const video = document.getElementById('surfVideo');
+        const maneuversList = document.querySelector('.maneuvers-list');
+        const maneuverCards = document.querySelectorAll('.maneuver-card-compact');
+        
+        // Sync video time with maneuver highlights and carousel scroll
+        video.addEventListener('timeupdate', function() {
+            const currentTime = video.currentTime;
+            let activeCard = null;
+            
+            maneuverCards.forEach(card => {
+                const startTime = parseFloat(card.dataset.start);
+                const endTime = parseFloat(card.dataset.end);
+                
+                if (currentTime >= startTime && currentTime < endTime) {
+                    card.classList.add('active');
+                    activeCard = card;
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+            
+            // Scroll carousel to center the active card
+            if (activeCard) {
+                const cardWidth = activeCard.offsetWidth;
+                const cardMargin = 20; // gap between cards
+                const containerWidth = maneuversList.offsetWidth;
+                const cardOffsetLeft = activeCard.offsetLeft;
+                
+                // Calculate position to center the active card
+                const scrollPosition = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
+                
+                // Smooth scroll to position
+                maneuversList.scrollTo({
+                    left: scrollPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+        
+        // Click on maneuver card to jump to that time
+        maneuverCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const startTime = parseFloat(this.dataset.start);
+                video.currentTime = startTime;
+                video.play();
+            });
+        });
+    </script>
+</body>
+</html>
